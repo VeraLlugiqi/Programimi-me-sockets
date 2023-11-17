@@ -11,6 +11,7 @@ ekzekutojë të paktën një kërkesë në server);
 4. Të jetë në gjendje të lexoje mesazhet që dërgohen nga klientët;
 5. Të jetë në gjendje të jap qasje të plotë të paktën njërit klient për qasje në folderat/
 përmbajtjen në file-t në server.
+
 Klienti
 1. Të krijohet socket lidhja me server;
 2. Njeri nga pajisjet (klientët) të ketë privilegjet write(), read(), execute();
