@@ -23,7 +23,7 @@ Klienti
 8. Të ketë qasje të plotë në folderat/përmbajtjen në server.
 
 Punuar nga:
-Suhejla Hoxha
-Tringa Baftiu
-Valtrina Cacaj
+Suhejla Hoxha,
+Tringa Baftiu,
+Valtrina Cacaj,
 Vera Llugiqi
