@@ -1,9 +1,9 @@
-#Projekti i dytë – Rrjetat Kompjuterike
-- Programimi me socekts duke perdorur protokollin TCP permes gjuhes programuese JavaScrip
+# Projekti i dytë – Rrjetat Kompjuterike
+- Programimi me socekts duke perdorur protokollin TCP permes gjuhes programuese JavaScript
 
-- Kerkesat:
+Kerkesat:
 
-Serveri
+### Serveri
 1. Të vendosen variabla te cilat përmbajnë numrin e portit (numri i portit të jetë i
 çfarëdoshëm) dhe IP adresën;
 2. Të jetë në gjendje të dëgjojë (listën) të paktën të gjithë anëtaret e grupit;
@@ -13,7 +13,7 @@ ekzekutojë të paktën një kërkesë në server);
 5. Të jetë në gjendje të jap qasje të plotë të paktën njërit klient për qasje në folderat/
 përmbajtjen në file-t në server.
 
-Klienti
+### Klienti
 1. Të krijohet socket lidhja me server;
 2. Njeri nga pajisjet (klientët) të ketë privilegjet write(), read(), execute();
 3. Klientët tjerë të kenë vetëm read() permission;
