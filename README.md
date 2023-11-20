@@ -1,6 +1,5 @@
-Përshkrimi i projektit të dytë – Rrjetat Kompjuterike
-- Programimi me socekts duke perdorur protokollin TCP permes gjuhes programuese JavaScript
-Kerkesat:
+**Përshkrimi i projektit të dytë – Rrjetat Kompjuterike**
+- Programimi me socekts duke perdorur protokollin TCP permes gjuhes programuese JavaScrip  Kerkesat:
 
 Serveri
 1. Të vendosen variabla te cilat përmbajnë numrin e portit (numri i portit të jetë i
