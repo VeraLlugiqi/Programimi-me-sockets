@@ -1,17 +1,17 @@
 const rl = readline.createInterface({ 
 
-input: process.stdin 
+  input: process.stdin 
 
-}); 
+  }); 
 
-rl.on('line', (line) => { 
+  rl.on('line', (line) => { 
 
-client.write(${line}\n); 
+  client.write(${line}\n); 
 
-}); 
+  }); 
 
-rl.on('close', () => { 
+  rl.on('close', () => { 
 
-client.end(); 
+  client.end(); 
 
 });
