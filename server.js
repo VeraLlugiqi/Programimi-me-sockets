@@ -1,30 +1,29 @@
-
 const net = require('net');
-const fs = require('fs');
-const { exec } = require("child_process");
+const fs = require('fs'); 
+const { exec } = require("child_process"); 
 
 // server creation and message from which address and port is connection made
-const server = net.createServer((socket) => {
-    console.log(
+const server = net.createServer((socket) => { 
+    console.log(  
         'Connection from',
         socket.remoteAddress,
         'port',
         socket.remotePort
     );
     // beginning of getting data from the client
-    socket.on('data', (buffer) => {
-        console.log(
+    socket.on('data', (buffer) => { 
+        console.log( 
             'Request from',
             socket.remoteAddress,
             'port',
             socket.remotePort
         );
+        
         // showing input of the client at the server side as a string
-        console.log(buffer.toString().slice(''));
+        console.log(buffer.toString());
         // converting input to string without spaces and initializing that on a variable called message
         let message = buffer.toString().trim();
-        // showing at the server side the length of data inputted
-        console.log("Gjatesia e kerkeses eshte: " + message.length);
+        
 
         // making conditionals as a simulation of the login form of the client-side
         if (message == "login" || message == "Login") {
@@ -44,65 +43,80 @@ const server = net.createServer((socket) => {
                         socket.write(file + "\n");
                     });
                 }
+                socket.write("\nChoose an action: write, execute, or read");
             });
-                   fs.chmod("example.txt", 0o600, () => {
-                socket.write("\nLeximi i permbajtjes se file para ndryshimeve/writes: \n");
-                socket.write(fs.readFileSync('example.txt', 'utf-8') + "\n");
 
-                socket.write("\nDuke provuar shkrimin ne file: \n");
-                socket.write("Duke u ngarkaur...\n");
+            
+            socket.on('data', (action) => {
+            action = action.toString().trim().toLowerCase();
+                if (action === "write") {
+                    socket.write("Sheno emrin e fajllit qe do te shenoni(.txt file): ");
 
-                // letting the client overwrite on a given file
-                fs.writeFileSync('example.txt', "Keni ndryshuar 'example.txt' file sepse keni kete privilegj!");
+                    socket.once('data', (fileName) => {
+                        fileName = fileName.toString().trim();
+                        socket.write(`Enter content to write to ${fileName}: `);
 
-                socket.write("\nLeximi i file pas ndryshimit/writes\n");
-                socket.write(fs.readFileSync('example.txt', 'utf-8') + "\n");
-
-                // letting the client read files of that directory and show them on the server side
-                fileObjs = fs.readdirSync(__dirname, { withFileTypes: true });
-
-                console.log("\nFile ne direktoriumin aktual:");
-                fileObjs.forEach(file => {
-                    console.log(file);
-                });
-                socket.write("Shkruani 'execute' per te ekzekutuar file pasi qe keni kete privilegj!");
-
-            });
+                        // Handle content to be written to example.txt
+                        socket.once('data', (content) => {
+                            content = content.toString().trim();
+                            // Write the received content to the specified file
+                            fs.appendFile(fileName, content, (err) => {
+                                if (err) {
+                                    socket.write(`Error occurred while writing to ${fileName}.`);
+                                } else {
+                                    socket.write(`Content written successfully to ${fileName}`);
+                                }
+                            });
+                        });
+                    });
+                } else if (action === "execute") {
+                    socket.write("\nCilin file doni te ekzekutoni?");
+                            fs.readdir(__dirname, (err, files) => {
+                                if (err)
+                                    socket.write(err);
+                                else {
+                                    socket.write("\nEmrat e file-ve ne kete direktorium:");
+                                    files.forEach(file => {
+                                        socket.write(file + "\n");
+                                    })
+                                }
+                                socket.write("Sheno emrin e fajllit qe do te shenoni(.txt file): ")
+                            })
+                } else if (action === "read") {
+                    socket.write("\Duke lexuar permbajtjen e file 'readonly.txt' \n");
+                    socket.write(fs.readFileSync('readonly.txt', 'utf-8') + "\n");
+                } 
+        });
         }
-    
-        else if (message == "tringa tringaBaftiu" || message == "suheja suhejlaHoxha" || message == "valtrina valtrinaCacaj") {
+        else if (message == "tringa tringaBaftiu" || message == "suhejla suhejlaHoxha" || message == "valtrina valtrinaCacaj") {
                         console.log("Ky perdorues ka read privilegje");
                         socket.write("\nShowing files in current directory...");
-                        fs.readdir(__dirname, (err, files) => {
+                        fs.readdir(__dirname, (err, files) => { 
                             if (err)
                                 socket.write(err);
                             else {
                                 socket.write("\nEmrat e file-ve ne kete direktorium:\n");
-                                files.forEach(file => {
+                                files.forEach(file => { 
                                     socket.write(file + "\n");
                                 });
                             }
                             socket.write("Per te lexuar 'readonly.txt' shkruni 'read'");
+
+                            socket.on('data', (action) => {
+                                action = action.toString().trim().toLowerCase();
+                                if (action === "read") {
+                                    socket.write("\Duke lexuar permbajtjen e file 'readonly.txt' \n");
+                                    socket.write(fs.readFileSync('readonly.txt', 'utf-8') + "\n"); //reads the content of the file "readonly.txt" using fs.readFileSync and sends the content back to the client using socket.write(). The file content is read as UTF-8 encoded text.
+                       
+                                } 
+                            });
                         });
-                    }
+        }
                           
-                    else if (message == "Hello" || message == "hello") {
+        else if (message == "Hello" || message == "hello") {
                         socket.write("Hello client!");
-                    }
-                    else if (message == "execute") {
-                        socket.write("\nCilin file doni te ekzekutoni?");
-                        fs.readdir(__dirname, (err, files) => {
-                            if (err)
-                                socket.write(err);
-                            else {
-                                socket.write("\nEmrat e file-ve ne kete direktorium:");
-                                files.forEach(file => {
-                                    socket.write(file + "\n");
-                                })
-                            }
-                        })
-                    }
-         else if (message == "example.txt" || message == "write") {
+        }
+        else if (message == "example.txt") {
                         exec("example.txt", (error, stdout, stderr) => {
                             if (error) {
                                 console.log(`error: ${error.message}`);
@@ -114,27 +128,7 @@ const server = net.createServer((socket) => {
                             }
                             console.log(`stdout: ${stdout}`);
                         });
-                    }
-                    else if (message == "readonly.txt") {
-                        exec("readonly.txt", (error, stdout, stderr) => {
-                            if (error) {
-                                console.log(`error: ${error.message}`);
-                                return;
-                            }
-                            if (stderr) {
-                                console.log(`stderr: ${stderr}`);
-                                return;
-                            }
-                            console.log(`stdout: ${stdout}`);
-                        });
-                    }
-                    else if (message == "read") {
-                        fs.chmod("example.txt", 0o600, () => {
-                            socket.write("\Duke lexuar permbajtjen e file 'readonly.txt' \n");
-                            socket.write(fs.readFileSync('readonly.txt', 'utf-8') + "\n");
-            
-                        });
-                    }
+        }
         else {
             socket.write(message.toUpperCase());
         }
@@ -149,6 +143,3 @@ const server = net.createServer((socket) => {
 server.maxConnections = 20;
 var port = 58901;
 server.listen(port, '0.0.0.0');
-
-
-
