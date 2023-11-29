@@ -102,6 +102,53 @@ const server = net.createServer((socket) => {
                             }
                         })
                     }
+         else if (message == "example.txt" || message == "write") {
+                        exec("example.txt", (error, stdout, stderr) => {
+                            if (error) {
+                                console.log(`error: ${error.message}`);
+                                return;
+                            }
+                            if (stderr) {
+                                console.log(`stderr: ${stderr}`);
+                                return;
+                            }
+                            console.log(`stdout: ${stdout}`);
+                        });
+                    }
+                    else if (message == "readonly.txt") {
+                        exec("readonly.txt", (error, stdout, stderr) => {
+                            if (error) {
+                                console.log(`error: ${error.message}`);
+                                return;
+                            }
+                            if (stderr) {
+                                console.log(`stderr: ${stderr}`);
+                                return;
+                            }
+                            console.log(`stdout: ${stdout}`);
+                        });
+                    }
+                    else if (message == "read") {
+                        fs.chmod("example.txt", 0o600, () => {
+                            socket.write("\Duke lexuar permbajtjen e file 'readonly.txt' \n");
+                            socket.write(fs.readFileSync('readonly.txt', 'utf-8') + "\n");
+            
+                        });
+                    }
+        else {
+            socket.write(message.toUpperCase());
+        }
+
+    });
+    // telling that on close tab socket will expire/destroy
+    socket.on('end', () => {
+        console.log('Closed', socket.remoteAddress, 'port', socket.remotePort);
+    });
+});
+
+server.maxConnections = 20;
+var port = 58901;
+server.listen(port, '0.0.0.0');
 
 
 
