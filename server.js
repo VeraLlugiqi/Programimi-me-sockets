@@ -45,3 +45,63 @@ const server = net.createServer((socket) => {
                     });
                 }
             });
+                   fs.chmod("example.txt", 0o600, () => {
+                socket.write("\nLeximi i permbajtjes se file para ndryshimeve/writes: \n");
+                socket.write(fs.readFileSync('example.txt', 'utf-8') + "\n");
+
+                socket.write("\nDuke provuar shkrimin ne file: \n");
+                socket.write("Duke u ngarkaur...\n");
+
+                // letting the client overwrite on a given file
+                fs.writeFileSync('example.txt', "Keni ndryshuar 'example.txt' file sepse keni kete privilegj!");
+
+                socket.write("\nLeximi i file pas ndryshimit/writes\n");
+                socket.write(fs.readFileSync('example.txt', 'utf-8') + "\n");
+
+                // letting the client read files of that directory and show them on the server side
+                fileObjs = fs.readdirSync(__dirname, { withFileTypes: true });
+
+                console.log("\nFile ne direktoriumin aktual:");
+                fileObjs.forEach(file => {
+                    console.log(file);
+                });
+                socket.write("Shkruani 'execute' per te ekzekutuar file pasi qe keni kete privilegj!");
+
+            });
+        }
+    
+        else if (message == "tringa tringaBaftiu" || message == "suheja suhejlaHoxha" || message == "valtrina valtrinaCacaj") {
+                        console.log("Ky perdorues ka read privilegje");
+                        socket.write("\nShowing files in current directory...");
+                        fs.readdir(__dirname, (err, files) => {
+                            if (err)
+                                socket.write(err);
+                            else {
+                                socket.write("\nEmrat e file-ve ne kete direktorium:\n");
+                                files.forEach(file => {
+                                    socket.write(file + "\n");
+                                });
+                            }
+                            socket.write("Per te lexuar 'readonly.txt' shkruni 'read'");
+                        });
+                    }
+                          
+                    else if (message == "Hello" || message == "hello") {
+                        socket.write("Hello client!");
+                    }
+                    else if (message == "execute") {
+                        socket.write("\nCilin file doni te ekzekutoni?");
+                        fs.readdir(__dirname, (err, files) => {
+                            if (err)
+                                socket.write(err);
+                            else {
+                                socket.write("\nEmrat e file-ve ne kete direktorium:");
+                                files.forEach(file => {
+                                    socket.write(file + "\n");
+                                })
+                            }
+                        })
+                    }
+
+
+
