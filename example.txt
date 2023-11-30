@@ -1,1 +1,1 @@
-You have changed 'example.txt' file because you have access to!
+I jeni casur file example.txt pasi qe keni keto privilegje!
