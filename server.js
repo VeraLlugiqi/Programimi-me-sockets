@@ -128,7 +128,24 @@ const server = net.createServer((socket) => {
                             }
                             console.log(`stdout: ${stdout}`);
                         });
+                        socket.write("\Duke lexuar permbajtjen e file 'example.txt' \n");
+                        socket.write(fs.readFileSync('example.txt', 'utf-8') + "\n");
         }
+        else if (message == "readonly.txt") {
+            exec("example.txt", (error, stdout, stderr) => {
+                if (error) {
+                    console.log(`error: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.log(`stderr: ${stderr}`);
+                    return;
+                }
+                console.log(`stdout: ${stdout}`);
+            });
+            socket.write("\Duke lexuar permbajtjen e file 'readonly.txt' \n");
+            socket.write(fs.readFileSync('readonly.txt', 'utf-8') + "\n");
+}
         else {
             socket.write(message.toUpperCase());
         }
