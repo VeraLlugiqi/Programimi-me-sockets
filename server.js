@@ -2,7 +2,7 @@ const net = require('net');
 const fs = require('fs'); 
 const { exec } = require("child_process"); 
 
-// server creation and message from which address and port is connection made
+// Krijimi i serverit dhe mesazhi nga i cili bëhet lidhja e adresës dhe portit
 const server = net.createServer((socket) => { 
     console.log(  
         'Connection from',
@@ -19,13 +19,13 @@ const server = net.createServer((socket) => {
             socket.remotePort
         );
         
-        // showing input of the client at the server side as a string
+        // duke treguar input-in e klientit në anën e serverit si një string
         console.log(buffer.toString());
-        // converting input to string without spaces and initializing that on a variable called message
+        // konvertimi i input-it në string pa hapësira dhe inicializimi i tij në një variabël të quajtur mesazh
         let message = buffer.toString().trim();
         
 
-        // making conditionals as a simulation of the login form of the client-side
+        // krijimi i kushteve si një simulim i formës së login-it në anën e klientit
         if (message == "login" || message == "Login") {
             socket.write("Shkruani: Username Password");
         }
@@ -56,10 +56,10 @@ const server = net.createServer((socket) => {
                         fileName = fileName.toString().trim();
                         socket.write(`Enter content to write to ${fileName}: `);
 
-                        // Handle content to be written to example.txt
+                        // Trajto përmbajtjen që do të shkruhet në example.txt
                         socket.once('data', (content) => {
                             content = content.toString().trim();
-                            // Write the received content to the specified file
+                            // Shkruani përmbajtjen e marrë në skedarin e specifikuar
                             fs.appendFile(fileName, content, (err) => {
                                 if (err) {
                                     socket.write(`Error occurred while writing to ${fileName}.`);
