@@ -1,7 +1,7 @@
 const net = require('net');
 const readline = require('readline');
 
-// Replace 'SERVER_IP' with the actual IP address of your server
+// Zëvendësoni 'SERVER_IP' me adresën aktuale të IP serverit tuaj
 const serverIp = '10.103.107.201';
 
 const client = new net.Socket();
